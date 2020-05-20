@@ -1,1 +1,1 @@
-Готовый таймер можно потыкать [здесь](https://ikzsl.github.io/timer/).
+Форма [здесь](https://ikzsl.github.io/form/).
