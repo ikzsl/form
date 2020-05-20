@@ -3,7 +3,6 @@ import { Button } from 'antd';
 
 import { millisecondsDevider, secondsDevider, minutesDevider } from '../../utils/utils';
 
-
 class Form extends React.Component {
   state = {
     isPaused: true,
