@@ -1,6 +1,8 @@
 import React from 'react';
 import { useFormik } from 'formik';
 
+import './form.scss';
+
 const Form = () => {
   const formik = useFormik({
     initialValues: {
@@ -11,7 +13,7 @@ const Form = () => {
   });
 
   return (
-    <form action="http://localhost:3012/sign-up" method="POST">
+    <form action="http://localhost:3012/sign-up" method="POST" className="form">
       <div>
         <label htmlFor="name">
           name
@@ -48,7 +50,9 @@ const Form = () => {
           />
         </label>
       </div>
-      <button type="submit">Submit</button>
+      <div>
+        <button type="submit">Submit</button>
+      </div>
     </form>
   );
 };
