@@ -1,178 +1,121 @@
 import React from 'react';
-import { useFormik } from 'formik';
+import {
+  Formik, Form, Field, ErrorMessage,
+} from 'formik';
+import * as Yup from 'yup';
 
 import './form.scss';
 
 const initialValues = {
   name: '',
   password: '',
-  repassword: '',
+  passwordConfirmation: '',
   email: '',
   website: '',
-  age: 0,
+  age: '',
   skills: [],
   acceptTerms: true,
 };
 
-const validate = (values) => {
-  const errors = {};
-  if (!values.name) {
-    errors.name = 'Required';
-  }
-  if (!values.password) {
-    errors.password = 'Required';
-  }
-  if (!values.repassword) {
-    errors.repassword = 'Required';
-  }
-  if (!values.email) {
-    errors.email = 'Required';
-  }
-  if (!values.age) {
-    errors.age = 'Required';
-  }
-  if (!values.acceptTerms) {
-    errors.acceptTerms = 'Required';
-  }
-  return errors;
-};
-
 const onSubmit = (values) => {
-  // console.log(values);
+  console.log(values);
   alert(JSON.stringify(values, null, 2));
 };
 
-const Form = () => {
-  const formik = useFormik({
-    initialValues,
-    validate,
-    onSubmit,
-  });
+const validationSchema = Yup.object({
+  name: Yup.string().max(50, 'Слишком длинно - не более 50 символов').required('Имя обязательно'),
+  password: Yup.string().required('Пароль нужен'),
+  passwordConfirmation: Yup.string()
+    .oneOf([Yup.ref('password'), null], 'Надо точь-в-точь как пароль')
+    .required('Обязательно'),
+  email: Yup.string().email('Неправильная почта').required('Почту, пожалуйста'),
+  age: Yup.number()
+    .min(18, 'Юнцам тут не место')
+    .max(65, 'Займись лучше внуками, дедуля')
+    .required('Сколько тебе лет?'),
+  skills: Yup.array(),
+  // acceptTerms: Yup.boolean().required('Нужно  твое согласие'),
+});
 
-  console.log('form values', formik.values);
-  console.log('form errors', formik.errors);
+const submitForm = () => (
+  // console.log('form values', formik.values);
+  // console.log('form errors', formik.errors);
+  // console.log('visited fields', formik.touched);
 
-  return (
-    // action="http://localhost:3012/sign-up"
-    // method="POST"
-    <form onSubmit={formik.handleSubmit} className="form">
+  // action="http://localhost:3012/sign-up"
+  // method="POST"
+  <Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={onSubmit}>
+    <Form className="form">
       <div>
         <label htmlFor="name">
           name
-          {' '}
-          {formik.errors.name ? <span className="error">{formik.errors.name}</span> : null}
-          <input
-            id="name"
-            type="text"
+          <ErrorMessage
             name="name"
-            onChange={formik.handleChange}
-            value={formik.values.name}
+            className="error"
+            render={(msg) => <span className="error">{msg}</span>}
           />
+          <Field id="name" type="text" name="name" />
         </label>
       </div>
       <div>
         <label htmlFor="pwd">
           Password:
-          {formik.errors.password ? <span className="error">{formik.errors.password}</span> : null}
-          <input
-            id="pwd"
-            type="password"
-            name="password"
-            onChange={formik.handleChange}
-            value={formik.values.password}
-          />
+          <ErrorMessage name="password" render={(msg) => <span className="error">{msg}</span>} />
+          <Field id="pwd" type="password" name="password" />
         </label>
       </div>
       <div>
         <label htmlFor="repwd">
-          rePassword:
-          {formik.errors.repassword ? (
-            <span className="error">{formik.errors.repassword}</span>
-          ) : null}
-          <input
-            id="repwd"
-            type="password"
-            name="repassword"
-            onChange={formik.handleChange}
-            value={formik.values.repassword}
+          passwordConfirmation:
+          <ErrorMessage
+            name="passwordConfirmation"
+            render={(msg) => <span className="error">{msg}</span>}
           />
+          <Field id="repwd" type="password" name="passwordConfirmation" />
         </label>
       </div>
       <div>
         <label htmlFor="email">
           email
-          {formik.errors.email ? <span className="error">{formik.errors.email}</span> : null}
-          <input
-            id="email"
-            type="email"
-            name="email"
-            onChange={formik.handleChange}
-            value={formik.values.email}
-          />
+          <ErrorMessage name="email" render={(msg) => <span className="error">{msg}</span>} />
+          <Field id="email" type="email" name="email" />
         </label>
       </div>
 
       <div>
         <label htmlFor="site">
           website
-          <input
-            id="site"
-            type="text"
-            name="website"
-            onChange={formik.handleChange}
-            value={formik.values.website}
-          />
+          <Field id="site" type="text" name="website" />
         </label>
       </div>
 
       <div>
         <label htmlFor="age">
           age
-          {formik.errors.age ? <span className="error">{formik.errors.age}</span> : null}
-          <input
-            id="age"
-            type="text"
-            name="age"
-            onChange={formik.handleChange}
-            value={formik.values.age}
-          />
+          <ErrorMessage name="age" render={(msg) => <span className="error">{msg}</span>} />
+          <Field id="age" type="text" name="age" />
         </label>
       </div>
 
       <div>
         <label htmlFor="skills">
           skills
-          <input
-            id="skills"
-            type="text"
-            name="skills"
-            onChange={formik.handleChange}
-            value={formik.values.skills}
-          />
+          <Field id="skills" type="text" name="skills" />
         </label>
       </div>
 
       <div>
         <label htmlFor="terms">
           acceptTerms
-          {formik.errors.acceptTerms ? (
-            <span className="error">{formik.errors.acceptTerms}</span>
-          ) : null}
-          <input
-            id="terms"
-            type="checkbox"
-            name="acceptTerms"
-            onChange={formik.handleChange}
-            value={formik.values.acceptTerms}
-          />
+          <ErrorMessage name="acceptTerms" render={(msg) => <span className="error">{msg}</span>} />
+          <Field id="terms" type="checkbox" name="acceptTerms" />
         </label>
       </div>
 
       <div>
         <button type="submit">Submit</button>
       </div>
-    </form>
-  );
-};
-
-export default Form;
+    </Form>
+  </Formik>
+);
+export default submitForm;
