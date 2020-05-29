@@ -36,7 +36,6 @@ const validationSchema = Yup.object({
   skills: Yup.array(),
   // acceptTerms: Yup.boolean().required('Нужно  твое согласие'),
 });
-
 const submitForm = () => (
   // console.log('form values', formik.values);
   // console.log('form errors', formik.errors);
@@ -65,14 +64,12 @@ const submitForm = () => (
         </label>
       </div>
       <div>
-        <label htmlFor="repwd">
-          passwordConfirmation:
-          <ErrorMessage
-            name="passwordConfirmation"
-            render={(msg) => <span className="error">{msg}</span>}
-          />
-          <Field id="repwd" type="password" name="passwordConfirmation" />
-        </label>
+        <label htmlFor="repwd">passwordConfirmation:</label>
+        <ErrorMessage
+          name="passwordConfirmation"
+          render={(msg) => <span className="error">{msg}</span>}
+        />
+        <Field id="repwd" type="password" name="passwordConfirmation" />
       </div>
       <div>
         <label htmlFor="email">
