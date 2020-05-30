@@ -45,7 +45,5 @@ app.post('/sign-up', (req, res) => {
     res.status(200);
     res.send('Пользователь успешно зарегистрирован').end();
   }
-
   // console.log(11111111, email, email, users);
-
 });
