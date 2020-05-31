@@ -7,8 +7,8 @@
 }
 //
 .form > div {
-  width: 100%;
   // padding: 10px;
+  width: 80%;
   max-width: 500px;
   margin-bottom: 10px;
 
@@ -16,7 +16,7 @@
 }
 //
 .form input {
-  width: 100%;
+  // width: 80%;
   //font-size: 20px;
   text-align: center;
 }
@@ -27,4 +27,10 @@
 
 .success {
   color: green;
+  margin: 10px 0;
+}
+
+.button {
+  width: 50%;
+  // margin: 10px;
 }

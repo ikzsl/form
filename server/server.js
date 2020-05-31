@@ -16,16 +16,18 @@ app.use(cors());
 app.use(bodyParser.json());
 
 app.post('/sign-up', (req, res) => {
-  const { name, password, email, website, age, skills } = req.body;
-  // console.log(users.findIndex((user) => email === user.email));
+  const {
+    name, password, email, website, age, skills,
+  } = req.body;
   if (users.findIndex((user) => email === user.email) > -1) {
     // console.log('АЖЫБГА', users);
-    // res.send('АЖЫБГА-такой уже есть');
-    app.use(() => {
-      res.status(400);
-      res.send('Пользователь с такой почтой уже есть').end();
-    });
-    throw new Error('Something broke yet again! ');
+    res.status(400);
+    res.send('Пользователь с такой почтой уже есть').end();
+    // app.use(() => {
+    //   res.status(400);
+    //   res.send('Пользователь с такой почтой уже есть').end();
+    // });
+    // throw new Error('Something broke yet again! ');
   } else {
     users = [
       ...users,
@@ -40,7 +42,6 @@ app.post('/sign-up', (req, res) => {
     ];
     // console.log(users);
     res.status(200);
-    res.send('Пользователь успешно зарегистрирован').end();
+    res.send('Вы успешно зарегистрированы').end();
   }
-  // console.log(11111111, email, email, users);
 });

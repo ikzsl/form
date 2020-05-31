@@ -3,12 +3,20 @@ import { Formik } from 'formik';
 import * as Yup from 'yup';
 import axios from 'axios';
 import {
-  Form, Input, InputNumber, Table, AddRowButton, Checkbox,
+  Form,
+  Input,
+  InputNumber,
+  Table,
+  AddRowButton,
+  Checkbox,
+  SubmitButton,
+  ResetButton,
 } from 'formik-antd';
 import './form.scss';
 
 class submitForm extends React.Component {
   state = {
+    loading: false,
     errorMessage: null,
     successMessage: null,
   };
@@ -19,7 +27,7 @@ class submitForm extends React.Component {
     passwordConfirmation: '',
     email: '',
     website: '',
-    age: '',
+    // age: '',
     skills: [''],
     acceptTerms: false,
   };
@@ -31,6 +39,7 @@ class submitForm extends React.Component {
       .oneOf([Yup.ref('password'), null], 'Надо точь-в-точь как пароль')
       .required('Обязательно'),
     email: Yup.string().email('Неправильная почта').required('Почту, пожалуйста'),
+    website: Yup.string().url('Неверный адрес сайта'),
     age: Yup.number()
       .min(18, 'Юнцам тут не место')
       .max(65, 'Займись лучше внуками, дедуля')
@@ -41,21 +50,19 @@ class submitForm extends React.Component {
 
   onSubmit = (values) => {
     const filteredSkills = values.skills.filter(Boolean);
-    // alert(JSON.stringify(values, null, 2));
+    this.setState({ loading: true });
     axios
       .post('http://localhost:3012/sign-up', { ...values, skills: filteredSkills })
       .then((response) => {
-        // console.log(`получил клиент ${response.data}`);
-        this.setState({ errorMessage: null, successMessage: response.data });
+        this.setState({ errorMessage: null, successMessage: response.data, loading: false });
       })
       .catch((err) => {
-        // console.log('axios client', err.response, err.response.data);
-        this.setState({ errorMessage: err.response.data, successMessage: null });
+        this.setState({ errorMessage: err.response.data, successMessage: null, loading: false });
       });
   };
 
   render() {
-    const { successMessage, errorMessage } = this.state;
+    const { successMessage, errorMessage, loading } = this.state;
     return (
       <Formik
         initialValues={this.initialValues}
@@ -66,13 +73,18 @@ class submitForm extends React.Component {
           <div>
             <label htmlFor="name">Имя</label>
             <Form.Item name="name">
-              <Input id="name" name="name" placeholder="Иван" />
+              <Input id="name" name="name" placeholder="Иван" size="large" />
             </Form.Item>
           </div>
           <div>
             <label htmlFor="pwd">Пароль </label>
             <Form.Item name="password">
-              <Input.Password id="pwd" name="password" placeholder="bu@UYvj#lkfhk!))nkjshd" />
+              <Input.Password
+                id="pwd"
+                name="password"
+                placeholder="bu@UYvj#lkfhk!))nkjshd"
+                size="large"
+              />
             </Form.Item>
           </div>
           <div>
@@ -82,6 +94,7 @@ class submitForm extends React.Component {
                 id="repwd"
                 name="passwordConfirmation"
                 placeholder="bu@UYvj#lkfhk!))nkjshd"
+                size="large"
               />
             </Form.Item>
           </div>
@@ -89,32 +102,23 @@ class submitForm extends React.Component {
             <label htmlFor="email">Электропочта </label>
             <span className="error">{errorMessage}</span>
             <Form.Item name="email">
-              <Input id="email" name="email" placeholder="ivan@mail.ru" />
+              <Input id="email" name="email" placeholder="ivan@mail.ru" size="large" />
             </Form.Item>
           </div>
 
           <div>
             <label htmlFor="site">Ваш сайт </label>
-            <Input id="site" name="website" placeholder="www.ivan.ru" />
+            <Form.Item name="website">
+              <Input id="site" name="website" placeholder="http://www.ivan.ru" size="large" />
+            </Form.Item>
           </div>
 
           <div>
             <label htmlFor="age">Возраст </label>
             <Form.Item name="age">
-              <InputNumber id="age" name="age" placeholder="Возраст" />
+              <InputNumber id="age" name="age" placeholder="Возраст" size="large" />
             </Form.Item>
           </div>
-
-          {/* <div>
-            <label htmlFor="skills">Навыки </label>
-            <Field id="skills" type="text" name="skills" placeholder="Навыки" />
-          </div> */}
-
-          {/* <AddRowButton
-            name="skills"
-            createNewRow={(text, record) => ({
-              name: record,
-            })} */}
 
           <Table
             name="skills"
@@ -125,16 +129,13 @@ class submitForm extends React.Component {
               {
                 title: 'Cуперспособности',
                 key: 'name',
-                render: (text, record, i) => <Input name={`skills[${i}]`} />,
+                render: (text, record, i) => (
+                  <Input name={`skills[${i}]`} placeholder="Телепатия" size="large" />
+                ),
               },
             ]}
           />
-          <AddRowButton
-            name="skills"
-            createNewRow={(text) => text || ''}
-
-            // createNewRow={(text, record) => record}
-          >
+          <AddRowButton name="skills" createNewRow={(text) => text || ''} size="large">
             Добавить суперспособность
           </AddRowButton>
 
@@ -146,8 +147,13 @@ class submitForm extends React.Component {
           </div>
 
           <div>
-            <button type="submit">Зарегистрироваться</button>
-            <span className="success">{successMessage}</span>
+            <SubmitButton loading={loading} size="large" className="button">
+              Зарегистрироваться
+            </SubmitButton>
+            <ResetButton size="large" className="button">
+              Очистить форму
+            </ResetButton>
+            <div className="success">{successMessage}</div>
           </div>
         </Form>
       </Formik>
