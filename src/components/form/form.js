@@ -55,20 +55,33 @@ class submitForm extends React.Component {
 
   onSubmit = async (values, { resetForm }) => {
     const filteredSkills = values.skills.filter(Boolean);
-    this.setState({ loading: true });
+    this.setState({
+      loading: true,
+    });
 
     try {
       const res = await axios.post('http://localhost:3012/sign-up', {
         ...values,
         skills: filteredSkills,
       });
+
       const { data } = res;
-      this.setState({ errorMessage: null, successMessage: data, loading: false });
+
+      this.setState({
+        errorMessage: null,
+        successMessage: data,
+        loading: false,
+      });
+
       resetForm({
         errorMessage: null,
       });
     } catch (err) {
-      this.setState({ errorMessage: err.response.data, successMessage: null, loading: false });
+      this.setState({
+        errorMessage: err.response.data,
+        successMessage: null,
+        loading: false,
+      });
     }
   };
 
