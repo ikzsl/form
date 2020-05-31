@@ -137,7 +137,7 @@ class submitForm extends React.Component {
           <div>
             <label htmlFor="age">Возраст </label>
             <Form.Item name="age">
-              <InputNumber id="age" name="age" placeholder="Возраст" size="large" />
+              <InputNumber id="age" name="age" placeholder="27" size="large" />
             </Form.Item>
           </div>
 
