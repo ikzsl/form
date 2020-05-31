@@ -20,7 +20,7 @@ class submitForm extends React.Component {
     email: '',
     website: '',
     age: '',
-    skills: [],
+    skills: [''],
     acceptTerms: false,
   };
 
@@ -40,10 +40,10 @@ class submitForm extends React.Component {
   });
 
   onSubmit = (values) => {
-    // console.log(values);
+    const filteredSkills = values.skills.filter(Boolean);
     // alert(JSON.stringify(values, null, 2));
     axios
-      .post('http://localhost:3012/sign-up', values)
+      .post('http://localhost:3012/sign-up', { ...values, skills: filteredSkills })
       .then((response) => {
         // console.log(`получил клиент ${response.data}`);
         this.setState({ errorMessage: null, successMessage: response.data });
@@ -110,14 +110,11 @@ class submitForm extends React.Component {
             <Field id="skills" type="text" name="skills" placeholder="Навыки" />
           </div> */}
 
-          <AddRowButton
+          {/* <AddRowButton
             name="skills"
             createNewRow={(text, record) => ({
               name: record,
-            })}
-          >
-            Add
-          </AddRowButton>
+            })} */}
 
           <Table
             name="skills"
@@ -126,12 +123,20 @@ class submitForm extends React.Component {
             pagination={false}
             columns={[
               {
-                title: 'Name',
+                title: 'Cуперспособности',
                 key: 'name',
-                render: (text, record, i) => <Input name={`skills.${i}.name`} />,
+                render: (text, record, i) => <Input name={`skills[${i}]`} />,
               },
             ]}
           />
+          <AddRowButton
+            name="skills"
+            createNewRow={(text) => text || ''}
+
+            // createNewRow={(text, record) => record}
+          >
+            Добавить суперспособность
+          </AddRowButton>
 
           <div>
             <Form.Item name="acceptTerms">
