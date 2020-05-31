@@ -23,6 +23,8 @@
 
 .error {
   color: red;
+  text-align: center;
+  padding-left: 30px;
 }
 
 .success {
@@ -31,7 +33,7 @@
 }
 
 .button {
-  width: 50%;
+  width: 45%;
   // margin: 10px;
 }
 
@@ -42,4 +44,9 @@
   text-align: center;
   align-self: center;
   display: block;
+}
+
+.formButtonsContainer {
+  display: flex;
+  justify-content: space-between;
 }

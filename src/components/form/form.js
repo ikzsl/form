@@ -53,20 +53,27 @@ class submitForm extends React.Component {
     acceptTerms: Yup.bool().oneOf([true], 'Нужно  твое согласие'),
   });
 
-  onSubmit = (values, { resetForm }) => {
+  onSubmit = async (values, { resetForm }) => {
     const filteredSkills = values.skills.filter(Boolean);
     this.setState({ loading: true });
-    axios
-      .post('http://localhost:3012/sign-up', { ...values, skills: filteredSkills })
-      .then((response) => {
-        this.setState({ errorMessage: null, successMessage: response.data, loading: false });
-        resetForm({});
-      })
-      .catch((err) => {
-        this.setState({ errorMessage: err.response.data, successMessage: null, loading: false });
-      });
 
-    Form.reset();
+    try {
+      const res = await axios.post('http://localhost:3012/sign-up', {
+        ...values,
+        skills: filteredSkills,
+      });
+      const { data } = res;
+      this.setState({ errorMessage: null, successMessage: data, loading: false });
+      resetForm({
+        errorMessage: null,
+      });
+    } catch (err) {
+      this.setState({ errorMessage: err.response.data, successMessage: null, loading: false });
+    }
+  };
+
+  clearCloneError = () => {
+    this.setState({ errorMessage: null });
   };
 
   render() {
@@ -90,7 +97,7 @@ class submitForm extends React.Component {
               <Input.Password
                 id="pwd"
                 name="password"
-                placeholder="bu@UYvj#lkfhk!))nkjshd"
+                placeholder="bu7UYvjl2nkj9WNshd"
                 size="large"
               />
             </Form.Item>
@@ -101,7 +108,7 @@ class submitForm extends React.Component {
               <Input.Password
                 id="repwd"
                 name="passwordConfirmation"
-                placeholder="bu@UYvj#lkfhk!))nkjshd"
+                placeholder="bu7UYvjl2nkj9WNshd"
                 size="large"
               />
             </Form.Item>
@@ -110,7 +117,13 @@ class submitForm extends React.Component {
             <label htmlFor="email">Электропочта </label>
             <span className="error">{errorMessage}</span>
             <Form.Item name="email">
-              <Input id="email" name="email" placeholder="ivan@mail.ru" size="large" />
+              <Input
+                id="email"
+                name="email"
+                placeholder="ivan@mail.ru"
+                size="large"
+                onChange={this.clearCloneError}
+              />
             </Form.Item>
           </div>
 
@@ -162,8 +175,7 @@ class submitForm extends React.Component {
             </Form.Item>
           </div>
 
-          <div>
-            <div className="success">{successMessage}</div>
+          <div className="formButtonsContainer">
             <SubmitButton loading={loading} size="large" className="button">
               Зарегистрироваться
             </SubmitButton>
@@ -171,9 +183,11 @@ class submitForm extends React.Component {
               Очистить форму
             </ResetButton>
           </div>
+          <div className="success">{successMessage}</div>
         </Form>
       </Formik>
     );
   }
 }
+
 export default submitForm;

@@ -9,7 +9,7 @@ const app = express();
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.listen(3012, () => {
-  // console.log('API app started');
+  // console.log('Server started');
 });
 
 app.use(cors());
@@ -20,14 +20,8 @@ app.post('/sign-up', (req, res) => {
     name, password, email, website, age, skills,
   } = req.body;
   if (users.findIndex((user) => email === user.email) > -1) {
-    // console.log('АЖЫБГА', users);
     res.status(400);
     res.send('Пользователь с такой почтой уже есть').end();
-    // app.use(() => {
-    //   res.status(400);
-    //   res.send('Пользователь с такой почтой уже есть').end();
-    // });
-    // throw new Error('Something broke yet again! ');
   } else {
     users = [
       ...users,
