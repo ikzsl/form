@@ -72,8 +72,12 @@ class submitForm extends React.Component {
     }
   };
 
-  clearCloneError = () => {
+  onClearCloneError = () => {
     this.setState({ errorMessage: null });
+  };
+
+  onClearSuccess = () => {
+    this.setState({ successMessage: null });
   };
 
   render() {
@@ -84,7 +88,7 @@ class submitForm extends React.Component {
         validationSchema={this.validationSchema}
         onSubmit={this.onSubmit}
       >
-        <Form className="form">
+        <Form className="form" onChange={this.onClearSuccess}>
           <div>
             <label htmlFor="name">Имя</label>
             <Form.Item name="name">
@@ -122,7 +126,7 @@ class submitForm extends React.Component {
                 name="email"
                 placeholder="ivan@mail.ru"
                 size="large"
-                onChange={this.clearCloneError}
+                onChange={this.onClearCloneError}
               />
             </Form.Item>
           </div>
