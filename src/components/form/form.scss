@@ -10,9 +10,9 @@
   // padding: 10px;
   width: 80%;
   max-width: 500px;
-  margin-bottom: 10px;
+  // margin-bottom: 10px;
 
-  // align-self: flex-start;
+  // align-self: center;
 }
 //
 .form input {
@@ -33,4 +33,13 @@
 .button {
   width: 50%;
   // margin: 10px;
+}
+
+.skillsButton {
+  width: 100%;
+  // margin: 8px;
+  margin-bottom: 20px;
+  text-align: center;
+  align-self: center;
+  display: block;
 }

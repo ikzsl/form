@@ -48,17 +48,20 @@ class submitForm extends React.Component {
     acceptTerms: Yup.bool().oneOf([true], 'Нужно  твое согласие'),
   });
 
-  onSubmit = (values) => {
+  onSubmit = (values, { resetForm }) => {
     const filteredSkills = values.skills.filter(Boolean);
     this.setState({ loading: true });
     axios
       .post('http://localhost:3012/sign-up', { ...values, skills: filteredSkills })
       .then((response) => {
         this.setState({ errorMessage: null, successMessage: response.data, loading: false });
+        resetForm({});
       })
       .catch((err) => {
         this.setState({ errorMessage: err.response.data, successMessage: null, loading: false });
       });
+
+    Form.reset();
   };
 
   render() {
@@ -120,24 +123,32 @@ class submitForm extends React.Component {
             </Form.Item>
           </div>
 
-          <Table
-            name="skills"
-            rowKey={(row) => `${row.id}`}
-            size="small"
-            pagination={false}
-            columns={[
-              {
-                title: 'Cуперспособности',
-                key: 'name',
-                render: (text, record, i) => (
-                  <Input name={`skills[${i}]`} placeholder="Телепатия" size="large" />
-                ),
-              },
-            ]}
-          />
-          <AddRowButton name="skills" createNewRow={(text) => text || ''} size="large">
-            Добавить суперспособность
-          </AddRowButton>
+          <div>
+            <Table
+              name="skills"
+              rowKey={(row) => `${row.id}`}
+              size="small"
+              pagination={false}
+              columns={[
+                {
+                  title: 'Cуперспособности',
+                  key: 'name',
+                  render: (text, record, i) => (
+                    <Input name={`skills[${i}]`} placeholder="Телепатия" size="large" />
+                  ),
+                },
+              ]}
+            />
+            <AddRowButton
+              name="skills"
+              createNewRow={(text) => text || ''}
+              size="large"
+              type="primary"
+              className="skillsButton"
+            >
+              Добавить суперспособность
+            </AddRowButton>
+          </div>
 
           <div>
             <Form.Item name="acceptTerms">
@@ -147,13 +158,13 @@ class submitForm extends React.Component {
           </div>
 
           <div>
+            <div className="success">{successMessage}</div>
             <SubmitButton loading={loading} size="large" className="button">
               Зарегистрироваться
             </SubmitButton>
             <ResetButton size="large" className="button">
               Очистить форму
             </ResetButton>
-            <div className="success">{successMessage}</div>
           </div>
         </Form>
       </Formik>
