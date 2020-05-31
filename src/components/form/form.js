@@ -35,7 +35,10 @@ class submitForm extends React.Component {
   validationSchema = Yup.object({
     name: Yup.string().max(50, 'Слишком длинно - не более 50 символов').required('Имя обязательно'),
     password: Yup.string()
-      .matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,40}$/, 'Invalid')
+      .matches(
+        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,40}$/,
+        'от 8 до 40 символов, как минимум одна цифра и одна заглавная буква',
+      )
       .required('Пароль нужен'),
     passwordConfirmation: Yup.string()
       .oneOf([Yup.ref('password'), null], 'Надо точь-в-точь как пароль')
