@@ -103,13 +103,19 @@ class submitForm extends React.Component {
       >
         <Form className="form" onChange={this.handleClearSuccess}>
           <div>
-            <label htmlFor="name">Имя</label>
+            <label htmlFor="name">
+              Имя
+              <span className="required-star"> *</span>
+            </label>
             <Form.Item name="name">
               <Input id="name" name="name" placeholder="Иван" size="large" />
             </Form.Item>
           </div>
           <div>
-            <label htmlFor="pwd">Пароль </label>
+            <label htmlFor="pwd">
+              Пароль
+              <span className="required-star"> *</span>
+            </label>
             <Form.Item name="password">
               <Input.Password
                 id="pwd"
@@ -120,7 +126,10 @@ class submitForm extends React.Component {
             </Form.Item>
           </div>
           <div>
-            <label htmlFor="repwd">Повторите пароль</label>
+            <label htmlFor="repwd">
+              Повторите пароль
+              <span className="required-star"> *</span>
+            </label>
             <Form.Item name="passwordConfirmation">
               <Input.Password
                 id="repwd"
@@ -131,7 +140,10 @@ class submitForm extends React.Component {
             </Form.Item>
           </div>
           <div>
-            <label htmlFor="email">Электропочта </label>
+            <label htmlFor="email">
+              Электропочта
+              <span className="required-star"> *</span>
+            </label>
             <span className="error">{errorMessage}</span>
             <Form.Item name="email">
               <Input
@@ -152,7 +164,10 @@ class submitForm extends React.Component {
           </div>
 
           <div>
-            <label htmlFor="age">Возраст </label>
+            <label htmlFor="age">
+              Возраст
+              <span className="required-star"> *</span>
+            </label>
             <Form.Item name="age">
               <InputNumber id="age" name="age" placeholder="27" size="large" />
             </Form.Item>
@@ -188,7 +203,11 @@ class submitForm extends React.Component {
           <div>
             <Form.Item name="acceptTerms">
               <Checkbox id="terms" name="acceptTerms" />
-              <label htmlFor="terms"> Согласен с условиями </label>
+              <label htmlFor="terms">
+                {' '}
+                Согласен с условиями
+                <span className="required-star"> *</span>
+              </label>
             </Form.Item>
           </div>
 
