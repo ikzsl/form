@@ -1,7 +1,6 @@
 import React from 'react';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
-import axios from 'axios';
 import {
   Form,
   Input,
@@ -12,13 +11,16 @@ import {
   SubmitButton,
   ResetButton,
 } from 'formik-antd';
+
+import getData from '../../data/data';
 import './form.scss';
 
 class SubmitForm extends React.Component {
   state = {
     loading: false,
-    errorMessage: null,
+    userCreatingErrorMessage: null,
     successMessage: null,
+    netErrorMessage: null,
   };
 
   initialValues = {
@@ -55,20 +57,23 @@ class SubmitForm extends React.Component {
 
   onSubmit = async (values, { resetForm }) => {
     const filteredSkills = values.skills.filter(Boolean);
+
     this.setState({
       loading: true,
     });
 
-    try {
-      const res = await axios.post('http://localhost:3012/sign-up', {
-        ...values,
-        skills: filteredSkills,
-      });
+    const body = {
+      ...values,
+      skills: filteredSkills,
+    };
 
+    try {
+      const res = await getData(body);
       const { data } = res;
 
       this.setState({
-        errorMessage: null,
+        userCreatingErrorMessage: null,
+        netErrorMessage: null,
         successMessage: data,
         loading: false,
       });
@@ -77,16 +82,24 @@ class SubmitForm extends React.Component {
         errorMessage: null,
       });
     } catch (err) {
+      // console.log('error', Object.entries(err), err.isAxiosError);
+      if (err.isAxiosError) {
+        this.setState({
+          netErrorMessage: 'Сервер не отвечает',
+          loading: false,
+        });
+      }
       this.setState({
-        errorMessage: err.response.data,
+        userCreatingErrorMessage: err.response.data,
         successMessage: null,
+        netErrorMessage: null,
         loading: false,
       });
     }
   };
 
   handleClearCloneError = () => {
-    this.setState({ errorMessage: null });
+    this.setState({ userCreatingErrorMessage: null });
   };
 
   handleClearSuccess = () => {
@@ -94,7 +107,9 @@ class SubmitForm extends React.Component {
   };
 
   render() {
-    const { successMessage, errorMessage, loading } = this.state;
+    const {
+      successMessage, userCreatingErrorMessage, netErrorMessage, loading,
+    } = this.state;
     return (
       <Formik
         initialValues={this.initialValues}
@@ -144,7 +159,7 @@ class SubmitForm extends React.Component {
               Электропочта
               <span className="required-star"> *</span>
             </label>
-            <span className="error">{errorMessage}</span>
+            <span className="error">{userCreatingErrorMessage}</span>
             <Form.Item name="email">
               <Input
                 id="email"
@@ -219,7 +234,8 @@ class SubmitForm extends React.Component {
               Очистить форму
             </ResetButton>
           </div>
-          <div className="success">{successMessage}</div>
+          <span className="success">{successMessage}</span>
+          <span className="error">{netErrorMessage}</span>
         </Form>
       </Formik>
     );
