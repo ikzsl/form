@@ -14,7 +14,7 @@ import {
 } from 'formik-antd';
 import './form.scss';
 
-class submitForm extends React.Component {
+class SubmitForm extends React.Component {
   state = {
     loading: false,
     errorMessage: null,
@@ -212,7 +212,7 @@ class submitForm extends React.Component {
           </div>
 
           <div className="formButtonsContainer">
-            <SubmitButton loading={loading} size="large" className="button">
+            <SubmitButton loading={loading} disabled={false} size="large" className="button">
               Зарегистрироваться
             </SubmitButton>
             <ResetButton size="large" className="button">
@@ -226,4 +226,4 @@ class submitForm extends React.Component {
   }
 }
 
-export default submitForm;
+export default SubmitForm;
