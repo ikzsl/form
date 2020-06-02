@@ -31,7 +31,7 @@ class SubmitForm extends React.Component {
     website: '',
     // age: '',
     skills: [''],
-    acceptTerms: false,
+    // acceptTerms: false,
   };
 
   validationSchema = Yup.object({
