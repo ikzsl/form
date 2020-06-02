@@ -11,6 +11,9 @@ import {
   SubmitButton,
   ResetButton,
 } from 'formik-antd';
+import {
+  MailOutlined, UserOutlined, LinkOutlined, ThunderboltOutlined,
+} from '@ant-design/icons';
 
 import getData from '../../data/data';
 import './form.scss';
@@ -110,6 +113,7 @@ class SubmitForm extends React.Component {
     const {
       successMessage, userCreatingErrorMessage, netErrorMessage, loading,
     } = this.state;
+
     return (
       <Formik
         initialValues={this.initialValues}
@@ -123,7 +127,13 @@ class SubmitForm extends React.Component {
               <span className="required-star"> *</span>
             </label>
             <Form.Item name="name">
-              <Input id="name" name="name" placeholder="Иван" size="large" />
+              <Input
+                id="name"
+                name="name"
+                placeholder="Иван"
+                size="large"
+                suffix={<UserOutlined />}
+              />
             </Form.Item>
           </div>
           <div>
@@ -167,6 +177,7 @@ class SubmitForm extends React.Component {
                 placeholder="ivan@mail.ru"
                 size="large"
                 onChange={this.handleClearCloneError}
+                suffix={<MailOutlined />}
               />
             </Form.Item>
           </div>
@@ -174,7 +185,13 @@ class SubmitForm extends React.Component {
           <div>
             <label htmlFor="site">Ваш сайт </label>
             <Form.Item name="website">
-              <Input id="site" name="website" placeholder="http://www.ivan.ru" size="large" />
+              <Input
+                id="site"
+                name="website"
+                placeholder="http://www.ivan.ru"
+                size="large"
+                suffix={<LinkOutlined />}
+              />
             </Form.Item>
           </div>
 
@@ -199,7 +216,12 @@ class SubmitForm extends React.Component {
                   title: 'Cуперспособности',
                   key: 'name',
                   render: (text, record, i) => (
-                    <Input name={`skills[${i}]`} placeholder="Телепатия" size="large" />
+                    <Input
+                      name={`skills[${i}]`}
+                      placeholder="Телепатия"
+                      size="large"
+                      suffix={<ThunderboltOutlined />}
+                    />
                   ),
                 },
               ]}
@@ -210,6 +232,7 @@ class SubmitForm extends React.Component {
               size="large"
               type="primary"
               className="skillsButton"
+              htmlType="submit"
             >
               Добавить суперспособность
             </AddRowButton>
