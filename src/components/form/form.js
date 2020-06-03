@@ -32,9 +32,9 @@ class SubmitForm extends React.Component {
     passwordConfirmation: '',
     email: '',
     website: '',
-    // age: '',
+    age: null,
     skills: [''],
-    // acceptTerms: false,
+    acceptTerms: false,
   };
 
   validationSchema = Yup.object({
@@ -51,12 +51,18 @@ class SubmitForm extends React.Component {
     email: Yup.string().email('Неправильная почта').required('Почту, пожалуйста'),
     website: Yup.string().url('Неверный адрес сайта'),
     age: Yup.number()
+      .typeError('Должно быть число')
       .min(18, 'Юнцам тут не место')
       .max(65, 'Займись лучше внуками, дедуля')
       .required('Сколько тебе лет?'),
     skills: Yup.array(),
     acceptTerms: Yup.bool().oneOf([true], 'Нужно  твое согласие'),
   });
+
+  constructor(props) {
+    super(props);
+    this.myRef = React.createRef();
+  }
 
   onSubmit = async (values, { resetForm }) => {
     const filteredSkills = values.skills.filter(Boolean);
@@ -107,6 +113,11 @@ class SubmitForm extends React.Component {
 
   handleClearSuccess = () => {
     this.setState({ successMessage: null });
+  };
+
+  handleClickButton = (evt) => {
+    evt.preventDefault();
+    document.getElementById('addSkillButton').click();
   };
 
   render() {
@@ -181,7 +192,6 @@ class SubmitForm extends React.Component {
               />
             </Form.Item>
           </div>
-
           <div>
             <label htmlFor="site">Ваш сайт </label>
             <Form.Item name="website">
@@ -194,7 +204,6 @@ class SubmitForm extends React.Component {
               />
             </Form.Item>
           </div>
-
           <div>
             <label htmlFor="age">
               Возраст
@@ -221,18 +230,21 @@ class SubmitForm extends React.Component {
                       placeholder="Телепатия"
                       size="large"
                       suffix={<ThunderboltOutlined />}
+                      onPressEnter={this.handleClickButton}
+                      autoFocus
                     />
                   ),
                 },
               ]}
             />
+
             <AddRowButton
               name="skills"
               createNewRow={(text) => text || ''}
               size="large"
               type="primary"
               className="skillsButton"
-              htmlType="submit"
+              id="addSkillButton"
             >
               Добавить суперспособность
             </AddRowButton>
