@@ -54,3 +54,8 @@
 .required-star {
   color: red;
 }
+
+* {
+  // animation-duration: 0s !important;
+  transition-duration: 0s !important;
+}

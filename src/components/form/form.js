@@ -1,3 +1,4 @@
+// on class
 import React from 'react';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
@@ -37,7 +38,7 @@ class SubmitForm extends React.Component {
     acceptTerms: false,
   };
 
-  validationSchema = Yup.object({
+  validationSchema = Yup.object().shape({
     name: Yup.string().max(50, 'Слишком длинно - не более 50 символов').required('Имя обязательно'),
     password: Yup.string()
       .matches(
@@ -56,13 +57,11 @@ class SubmitForm extends React.Component {
       .max(65, 'Займись лучше внуками, дедуля')
       .required('Сколько тебе лет?'),
     skills: Yup.array(),
-    acceptTerms: Yup.bool().oneOf([true], 'Нужно  твое согласие'),
+    acceptTerms: Yup.bool()
+      .oneOf([true], 'Нужно согласие')
+      .required('Обязательно')
+      .nullable('null'),
   });
-
-  constructor(props) {
-    super(props);
-    this.myRef = React.createRef();
-  }
 
   onSubmit = async (values, { resetForm }) => {
     const filteredSkills = values.skills.filter(Boolean);
@@ -251,7 +250,7 @@ class SubmitForm extends React.Component {
           </div>
 
           <div>
-            <Form.Item name="acceptTerms">
+            <Form.Item name="acceptTerms" shouldUpdate={false}>
               <Checkbox id="terms" name="acceptTerms" />
               <label htmlFor="terms">
                 {' '}
