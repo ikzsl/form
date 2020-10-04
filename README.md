@@ -1,1 +1,1 @@
- ## [Форма - униформа](https://ikzsl.github.io/form/)
+ ## [Форма регистрации](https://ikzsl.github.io/form/)
